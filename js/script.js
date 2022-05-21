@@ -8,6 +8,7 @@ const message = document.querySelector(".message");
 const playAgainButton = document.querySelector(".play-again");
 
 const word = "magnolia";
+const guessed = [];
 
 //displays circles in place of missing letters//
 
@@ -26,7 +27,40 @@ circles(word);
 
 guessButton.addEventListener("click", function (e) {
     e.preventDefault();
+    message.innerText ="";
+    
     const guessInput = textInput.value;
-    console.log(guessInput);
+    const goodGuess = validate(guessInput);
+
+    if (goodGuess) {
+        makeGuess(guessInput);
+    }
     textInput.value="";
+    
 });
+
+//checks player's input//
+
+const validate = function (input) {
+    const acceptedLetter = /[a-zA-Z]/;
+    if (input.length === 0) {
+        message.innerText = "Oops, we didn't get that. Try entering a letter from A to Z again.";
+    } else if (input.length > 1) {
+        message.innerText = "Please enter just one letter.";
+    } else if (!input.match(acceptedLetter)) {
+        message.innerText = "Please enter a letter from A to Z.";
+    } else {
+        return input;
+    }
+};
+
+const makeGuess = function (guessInput) {
+    guessInput = guessInput.toUpperCase();
+    if (guessed.includes(guessInput)) {
+        message.innerText = "You have already guessed that letter. Try again!";
+    } else {
+        guessed.push(guessInput);
+        console.log(guessed);
+    }
+};
+
